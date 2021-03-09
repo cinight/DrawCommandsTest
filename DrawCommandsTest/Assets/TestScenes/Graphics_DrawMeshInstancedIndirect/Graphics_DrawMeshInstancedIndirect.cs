@@ -21,24 +21,18 @@ public class Graphics_DrawMeshInstancedIndirect : MonoBehaviour
     {
         SetUp();
 
-        //if(positionBuffer == null || !positionBuffer.IsValid())
-        //{
-            positionBuffer = new ComputeBuffer(count, 12);
-            positionBuffer.SetData(positions);
-            material.SetBuffer("positionBuffer", positionBuffer);
-        //}
+        positionBuffer = new ComputeBuffer(count, 12);
+        positionBuffer.SetData(positions);
+        material.SetBuffer("positionBuffer", positionBuffer);
 
-        //if(argsBuffer == null || !argsBuffer.IsValid())
-        //{
-            uint[] args = new uint[5] { 0, 0, 0, 0, 0 };
-            args[0] = (uint)mesh.GetIndexCount(0);
-            args[1] = (uint)count;
-            args[2] = (uint)mesh.GetIndexStart(0);
-            args[3] = (uint)mesh.GetBaseVertex(0);
+        uint[] args = new uint[5] { 0, 0, 0, 0, 0 };
+        args[0] = (uint)mesh.GetIndexCount(0);
+        args[1] = (uint)count;
+        args[2] = (uint)mesh.GetIndexStart(0);
+        args[3] = (uint)mesh.GetBaseVertex(0);
 
-            argsBuffer = new ComputeBuffer(1, args.Length * sizeof(uint), ComputeBufferType.IndirectArguments);
-            argsBuffer.SetData(args);
-        //}
+        argsBuffer = new ComputeBuffer(1, args.Length * sizeof(uint), ComputeBufferType.IndirectArguments);
+        argsBuffer.SetData(args);
 
         bound = new Bounds(this.transform.position, Vector3.one*100f);
     }
