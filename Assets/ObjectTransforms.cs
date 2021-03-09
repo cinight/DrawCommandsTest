@@ -34,17 +34,17 @@ public class ObjectTransforms
         return positions;
     }
 
-    // public static Vector4[] GenerateObjPosV4(int count, Vector3 wpos, float spacing)
-    // {
-    //     Vector4[] positionsV4 = new Vector4[count];
-    //     Vector3[] positions = GenerateObjPos(count, wpos, spacing);
-    //     for(int i=0; i<count; i++)
-    //     {
-    //         positionsV4[i] = (Vector4) positions[i];
-    //     }
+    public static Vector4[] GenerateObjPosV4(int count, Vector3 wpos, float spacing)
+    {
+        Vector4[] positionsV4 = new Vector4[count];
+        Vector3[] positions = GenerateObjPos(count, wpos, spacing);
+        for(int i=0; i<count; i++)
+        {
+            positionsV4[i] = (Vector4) positions[i];
+        }
 
-    //     return positionsV4;
-    // }
+        return positionsV4;
+    }
 
     public static Quaternion[] GenerateObjRot(int count)
     {

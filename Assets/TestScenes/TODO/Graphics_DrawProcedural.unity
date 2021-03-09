@@ -149,13 +149,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 840945584}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0b5b9507995b247d1af60bf9ae1443bf, type: 3}
+  m_Script: {fileID: 11500000, guid: 38158e6aa35f040fbb14716c16d77f92, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   count: 20
   spacing: 2
   mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
-  material: {fileID: 2100000, guid: 2e2a9e5925f324c699f4b9d05b9db039, type: 2}
+  material: {fileID: 2100000, guid: 29f8d82af33f545048cf69649017eb1c, type: 2}
+  castShadows: 1
+  receiveShadows: 1
+  layer:
+    serializedVersion: 2
+    m_Bits: 1
 --- !u!4 &840945586
 Transform:
   m_ObjectHideFlags: 0
