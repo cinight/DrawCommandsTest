@@ -1,0 +1,1 @@
+DrawProcedural won't work in Metal because Metal doesn't support geometry shaders.
