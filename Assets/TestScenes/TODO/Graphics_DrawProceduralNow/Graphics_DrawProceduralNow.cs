@@ -3,18 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
 
-public class Graphics_DrawProcedural : MonoBehaviour
+public class Graphics_DrawProceduralNow : MonoBehaviour
 {
     [Header("Layout")]
     public int count = 10;
     public float spacing = 1f;
 
     [Header("Content")]
-    public Mesh mesh;
     public Material material;
-    public ShadowCastingMode castShadows;
-    public bool receiveShadows = true;
-    public LayerMask layer = 0;
 
     private Camera cam;
     private Vector4[] positions;
@@ -29,12 +25,13 @@ public class Graphics_DrawProcedural : MonoBehaviour
         properties = new MaterialPropertyBlock();
     }
 
-    void Update()
+    void OnPostRender()
     {
         for(int i=0; i<count; i++)
         {
-            properties.SetVector("position",positions[i]);
-            Graphics.DrawProcedural(material, bound, MeshTopology.Triangles, 3, 1, cam, properties, castShadows, receiveShadows, layer);
+            material.SetPass(0);
+            material.SetVector("position",positions[i]);
+            Graphics.DrawProceduralNow(MeshTopology.Triangles, 3, 1);
         }
     }
 

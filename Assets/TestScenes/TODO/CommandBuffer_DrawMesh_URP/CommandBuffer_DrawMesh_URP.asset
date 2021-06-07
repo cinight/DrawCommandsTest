@@ -18,7 +18,7 @@ MonoBehaviour:
   anchor: {x: 2.215506, y: 1.6556728, z: 5.180171}
   mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
   material: {fileID: 2100000, guid: 9813346092cc9426a98eb2771bce46b5, type: 2}
-  Event: 1000
+  Event: 300
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -29,7 +29,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: de640fe3d0db1804a85f9fc8f5cadab6, type: 3}
-  m_Name: CommandBuffer_DrawMeshNow_URP
+  m_Name: CommandBuffer_DrawMesh_URP
   m_EditorClassIdentifier: 
   m_RendererFeatures:
   - {fileID: -4947404278947546885}

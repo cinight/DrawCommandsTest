@@ -6,7 +6,7 @@ using UnityEngine.Rendering.Universal;
 using UnityEngine.Rendering.Universal.Internal;
 
 [CreateAssetMenu]
-public class CommandBuffer_DrawMeshNow_URP : ScriptableRendererFeature
+public class CommandBuffer_DrawMesh_URP : ScriptableRendererFeature
 {
     [Header("Layout")]
     public int count = 10;
@@ -20,7 +20,7 @@ public class CommandBuffer_DrawMeshNow_URP : ScriptableRendererFeature
     [Header("Settings")]
     public RenderPassEvent Event = RenderPassEvent.AfterRenderingPostProcessing;
 
-	public CommandBuffer_DrawMeshNow_URP()
+	public CommandBuffer_DrawMesh_URP()
 	{
 	}
 
@@ -30,7 +30,7 @@ public class CommandBuffer_DrawMeshNow_URP : ScriptableRendererFeature
 
     public override void AddRenderPasses(ScriptableRenderer renderer, ref RenderingData renderingData)
     {
-        var pass = new CommandBuffer_DrawMeshNow_URPPass(Event,count,spacing,anchor,mesh,material);
+        var pass = new CommandBuffer_DrawMesh_URPPass(Event,count,spacing,anchor,mesh,material);
         renderer.EnqueuePass(pass);
     }
 
@@ -39,7 +39,7 @@ public class CommandBuffer_DrawMeshNow_URP : ScriptableRendererFeature
     }
 
     //========================================================================================================
-    internal class CommandBuffer_DrawMeshNow_URPPass : ScriptableRenderPass
+    internal class CommandBuffer_DrawMesh_URPPass : ScriptableRenderPass
     {
         private int count;
         private float spacing;
@@ -51,7 +51,7 @@ public class CommandBuffer_DrawMeshNow_URP : ScriptableRendererFeature
         private Vector3[] positions;
         private Quaternion[] rotations;
 
-        public CommandBuffer_DrawMeshNow_URPPass(RenderPassEvent renderPassEvent, 
+        public CommandBuffer_DrawMesh_URPPass(RenderPassEvent renderPassEvent, 
         int count, float spacing, Vector3 anchor, Mesh mesh, Material material)
         {
             this.renderPassEvent = renderPassEvent;
@@ -73,11 +73,14 @@ public class CommandBuffer_DrawMeshNow_URP : ScriptableRendererFeature
 
         public override void Execute(ScriptableRenderContext context, ref RenderingData renderingData)
         {
+            CommandBuffer cmd = CommandBufferPool.Get("CommandBuffer_DrawMesh_URP");
             material.SetPass(0);
             for(int i=0; i<count; i++)
             {
-                Graphics.DrawMeshNow(mesh,positions[i],rotations[i]);
+                //CommandBuffer.DrawMesh(mesh,positions[i],rotations[i]);
             }
+            context.ExecuteCommandBuffer(cmd);
+            CommandBufferPool.Release(cmd);
         }
     }
 }
