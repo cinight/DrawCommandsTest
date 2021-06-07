@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[ExecuteInEditMode]
 public class Graphics_DrawMeshInstancedIndirect : MonoBehaviour
 {
     [Header("Layout")]
@@ -65,6 +66,11 @@ public class Graphics_DrawMeshInstancedIndirect : MonoBehaviour
     private void SetUp()
     {
         positions = ObjectTransforms.GenerateObjPos(count,transform.position,spacing);
+    }
+
+    void OnGUI()
+    {
+        EditmodeUpdate.Update();
     }
 
     void OnValidate()

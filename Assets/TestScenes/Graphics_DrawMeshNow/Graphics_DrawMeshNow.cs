@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[ExecuteInEditMode]
 public class Graphics_DrawMeshNow : MonoBehaviour
 {
     [Header("Layout")]
@@ -34,6 +35,11 @@ public class Graphics_DrawMeshNow : MonoBehaviour
     {
         rotations = ObjectTransforms.GenerateObjRot(count);
         positions = ObjectTransforms.GenerateObjPos(count,anchor.position,spacing);
+    }
+
+    void OnGUI()
+    {
+        EditmodeUpdate.Update();
     }
 
     void OnValidate()

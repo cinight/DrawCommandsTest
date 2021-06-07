@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[ExecuteInEditMode]
 public class Graphics_DrawMesh : MonoBehaviour
 {
     [Header("Layout")]
@@ -39,6 +40,11 @@ public class Graphics_DrawMesh : MonoBehaviour
     void OnValidate()
     {
         SetUp();
+    }
+
+    void OnGUI()
+    {
+        EditmodeUpdate.Update();
     }
 
     void OnDrawGizmos()
