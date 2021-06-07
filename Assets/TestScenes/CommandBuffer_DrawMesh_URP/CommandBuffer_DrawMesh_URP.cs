@@ -50,6 +50,7 @@ public class CommandBuffer_DrawMesh_URP : ScriptableRendererFeature
 
         private Vector3[] positions;
         private Quaternion[] rotations;
+        private Matrix4x4[] matrix;
 
         public CommandBuffer_DrawMesh_URPPass(RenderPassEvent renderPassEvent, 
         int count, float spacing, Vector3 anchor, Mesh mesh, Material material)
@@ -69,15 +70,19 @@ public class CommandBuffer_DrawMesh_URP : ScriptableRendererFeature
         {
             if(rotations==null) rotations = ObjectTransforms.GenerateObjRot(count);
             if(positions==null) positions = ObjectTransforms.GenerateObjPos(count,anchor,spacing);
+            if(matrix==null) matrix = new Matrix4x4[count];
+            for(int i=0; i<count; i++)
+            {
+                matrix[i] = Matrix4x4.TRS( positions[i] , rotations[i] ,Vector3.one);
+            }
         }
 
         public override void Execute(ScriptableRenderContext context, ref RenderingData renderingData)
         {
             CommandBuffer cmd = CommandBufferPool.Get("CommandBuffer_DrawMesh_URP");
-            material.SetPass(0);
             for(int i=0; i<count; i++)
             {
-                //CommandBuffer.DrawMesh(mesh,positions[i],rotations[i]);
+                cmd.DrawMesh(mesh,matrix[i],material,0,0);
             }
             context.ExecuteCommandBuffer(cmd);
             CommandBufferPool.Release(cmd);
