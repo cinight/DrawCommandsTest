@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
 
+[ExecuteInEditMode]
 public class Graphics_DrawProceduralNow : MonoBehaviour
 {
     [Header("Layout")]
@@ -37,6 +38,11 @@ public class Graphics_DrawProceduralNow : MonoBehaviour
     void OnValidate()
     {
         SetUp();
+    }
+
+    void OnGUI()
+    {
+        EditmodeUpdate.Update();
     }
 
     void OnDrawGizmos()
