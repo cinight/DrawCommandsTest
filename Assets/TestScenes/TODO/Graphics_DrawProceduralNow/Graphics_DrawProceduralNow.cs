@@ -12,17 +12,11 @@ public class Graphics_DrawProceduralNow : MonoBehaviour
     [Header("Content")]
     public Material material;
 
-    private Camera cam;
     private Vector4[] positions;
-    private Bounds bound;
-    private MaterialPropertyBlock properties;
 
     void Start()
     {
         SetUp();
-        cam = Camera.main;
-        bound = new Bounds(this.transform.position, Vector3.one*100f);
-        properties = new MaterialPropertyBlock();
     }
 
     void OnPostRender()
