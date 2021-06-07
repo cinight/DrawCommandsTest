@@ -2,11 +2,13 @@ Shader "Unlit/Graphics_DrawProcedural"
 {
     Properties
     {
+        _Size ("_Size", Range(0,2)) = 1
         _MainTex ("Texture", 2D) = "white" {}
     }
     SubShader
     {
         Tags { "RenderType"="Opaque" }
+        Cull Off
 
         Pass
         {
@@ -37,12 +39,13 @@ Shader "Unlit/Graphics_DrawProcedural"
             sampler2D _MainTex;
             float4 _MainTex_ST;
             float4 position;
+            float _Size;
 
-            v2f vert (appdata v)
+            v2g vert (appdata v)
             {
                 float3 wPos = position.xyz + v.pos.xyz;
 
-                v2f o;
+                v2g o;
                 o.pos = mul(UNITY_MATRIX_VP, float4(wPos, 1.0f));
                 return o;
             }
