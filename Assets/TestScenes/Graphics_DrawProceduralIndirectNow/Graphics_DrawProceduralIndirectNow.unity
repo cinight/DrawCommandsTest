@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028352, g: 0.22571376, b: 0.30692244, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -132,7 +132,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 840945586}
-  - component: {fileID: 840945585}
   m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
@@ -140,22 +139,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &840945585
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 840945584}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0b5b9507995b247d1af60bf9ae1443bf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  count: 20
-  spacing: 2
-  mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
-  material: {fileID: 2100000, guid: 2e2a9e5925f324c699f4b9d05b9db039, type: 2}
 --- !u!4 &840945586
 Transform:
   m_ObjectHideFlags: 0
@@ -274,6 +257,7 @@ GameObject:
   - component: {fileID: 2028382048}
   - component: {fileID: 2028382047}
   - component: {fileID: 2028382046}
+  - component: {fileID: 2028382049}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -346,6 +330,22 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 9.88, y: -14.835, z: 2.491}
+--- !u!114 &2028382049
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2028382045}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42a8575b6c043134ca11a84efa1d9c6a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  count: 20
+  spacing: 2
+  offset: {fileID: 840945586}
+  material: {fileID: 2100000, guid: 29f8d82af33f545048cf69649017eb1c, type: 2}
 --- !u!1 &2073657381
 GameObject:
   m_ObjectHideFlags: 0

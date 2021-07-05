@@ -9,6 +9,7 @@ public class Graphics_DrawProceduralNow : MonoBehaviour
     [Header("Layout")]
     public int count = 10;
     public float spacing = 1f;
+    public Transform offset;
 
     [Header("Content")]
     public Material material;
@@ -32,7 +33,7 @@ public class Graphics_DrawProceduralNow : MonoBehaviour
 
     private void SetUp()
     {
-        positions = ObjectTransforms.GenerateObjPosV4(count,transform.position,spacing);
+        positions = ObjectTransforms.GenerateObjPosV4(count,offset.position,spacing);
     }
 
     void OnValidate()
