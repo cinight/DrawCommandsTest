@@ -154,7 +154,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   count: 20
   spacing: 2
-  material: {fileID: 2100000, guid: 29f8d82af33f545048cf69649017eb1c, type: 2}
+  material: {fileID: 2100000, guid: b77b100a92e8cdf45ac9a67825cf2861, type: 2}
   castShadows: 1
   receiveShadows: 1
   layer:

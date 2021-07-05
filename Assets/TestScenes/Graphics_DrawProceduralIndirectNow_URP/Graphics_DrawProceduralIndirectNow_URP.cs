@@ -18,12 +18,31 @@ public class Graphics_DrawProceduralIndirectNow_URP : MonoBehaviour
     private Vector4[] positions;
     private Bounds bound;
     private ComputeBuffer argsBuffer;
+    private ComputeBuffer positionBuffer;
 
     void Start()
     {
         SetUp();
+        RenderPipelineManager.endCameraRendering += OnEndCameraRendering;
+    }
+
+    void OnEndCameraRendering(ScriptableRenderContext context, Camera camera)
+    {
+        material.SetPass(0);
+        Graphics.DrawProceduralIndirectNow(MeshTopology.Triangles, argsBuffer, 0);
+    }
+
+    private void SetUp()
+    {
+        CleanUp();
+        positions = ObjectTransforms.GenerateObjPosV4(count,offset.position,spacing);
+
+        positionBuffer = new ComputeBuffer(count, 16);
+        positionBuffer.SetData(positions);
+        material.SetBuffer("positionBuffer", positionBuffer);
+
         cam = Camera.main;
-        bound = new Bounds(this.transform.position, Vector3.one*100f);
+        bound = new Bounds(offset.position, Vector3.one*100f);
 
         uint[] args = new uint[5] { 0, 0, 0, 0, 0 };
         args[0] = (uint)3; // vertex count per instance
@@ -33,32 +52,11 @@ public class Graphics_DrawProceduralIndirectNow_URP : MonoBehaviour
 
         argsBuffer = new ComputeBuffer(1, args.Length * sizeof(uint), ComputeBufferType.IndirectArguments);
         argsBuffer.SetData(args);
-        RenderPipelineManager.endCameraRendering += OnEndCameraRendering;
-    }
-
-    void OnEndCameraRendering(ScriptableRenderContext context, Camera camera)
-    {
-        for(int i=0; i<count; i++)
-        {
-            material.SetPass(0);
-            material.SetVector("position",positions[i]);
-            Graphics.DrawProceduralIndirectNow(MeshTopology.Triangles, argsBuffer, 0);
-        }
-    }
-
-    private void SetUp()
-    {
-        positions = ObjectTransforms.GenerateObjPosV4(count,offset.position,spacing);
     }
 
     void OnValidate()
     {
         SetUp();
-    }
-
-    void OnDestroy()
-    {
-        RenderPipelineManager.endCameraRendering -= OnEndCameraRendering;
     }
 
     void OnGUI()
@@ -80,8 +78,19 @@ public class Graphics_DrawProceduralIndirectNow_URP : MonoBehaviour
         CleanUp();
     }
 
+    void OnDestroy()
+    {
+        RenderPipelineManager.endCameraRendering -= OnEndCameraRendering;
+    }
+
     private void CleanUp()
     {
+        if (positionBuffer != null)
+        {
+            positionBuffer.Release();
+            positionBuffer = null;
+        }
+
         if (argsBuffer != null)
         {
             argsBuffer.Release();

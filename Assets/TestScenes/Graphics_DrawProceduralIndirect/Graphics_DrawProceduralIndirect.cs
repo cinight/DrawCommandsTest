@@ -19,15 +19,31 @@ public class Graphics_DrawProceduralIndirect : MonoBehaviour
     private Camera cam;
     private Vector4[] positions;
     private Bounds bound;
-    private MaterialPropertyBlock properties;
     private ComputeBuffer argsBuffer;
+    private ComputeBuffer positionBuffer;
 
     void Start()
     {
         SetUp();
+    }
+
+    void Update()
+    {
+        Graphics.DrawProceduralIndirect(material, bound, MeshTopology.Triangles, argsBuffer, 0, cam, null, castShadows, receiveShadows, layer);
+    }
+
+    private void SetUp()
+    {
+        CleanUp();
+
+        positions = ObjectTransforms.GenerateObjPosV4(count,transform.position,spacing);
+
         cam = Camera.main;
         bound = new Bounds(this.transform.position, Vector3.one*100f);
-        properties = new MaterialPropertyBlock();
+
+        positionBuffer = new ComputeBuffer(count, 16);
+        positionBuffer.SetData(positions);
+        material.SetBuffer("positionBuffer", positionBuffer);
 
         uint[] args = new uint[5] { 0, 0, 0, 0, 0 };
         args[0] = (uint)3; // vertex count per instance
@@ -37,20 +53,6 @@ public class Graphics_DrawProceduralIndirect : MonoBehaviour
 
         argsBuffer = new ComputeBuffer(1, args.Length * sizeof(uint), ComputeBufferType.IndirectArguments);
         argsBuffer.SetData(args);
-    }
-
-    void Update()
-    {
-        for(int i=0; i<count; i++)
-        {
-            properties.SetVector("position",positions[i]);
-            Graphics.DrawProceduralIndirect(material, bound, MeshTopology.Triangles, argsBuffer, 0, cam, properties, castShadows, receiveShadows, layer);
-        }
-    }
-
-    private void SetUp()
-    {
-        positions = ObjectTransforms.GenerateObjPosV4(count,transform.position,spacing);
     }
 
     void OnValidate()
@@ -79,6 +81,12 @@ public class Graphics_DrawProceduralIndirect : MonoBehaviour
 
     private void CleanUp()
     {
+        if (positionBuffer != null)
+        {
+            positionBuffer.Release();
+            positionBuffer = null;
+        }
+
         if (argsBuffer != null)
         {
             argsBuffer.Release();
