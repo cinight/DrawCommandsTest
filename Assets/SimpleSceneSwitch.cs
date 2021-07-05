@@ -33,7 +33,7 @@ public class SimpleSceneSwitch : MonoBehaviour
         GUI.skin.label.fontSize = Mathf.RoundToInt ( 16 * scale );
         //GUI.backgroundColor = new Color(0, 0, 0, .80f);
         GUI.color = new Color(1, 1, 1, 1);
-        float w = 410 * scale;
+        float w = 500 * scale;
         float h = 90 * scale;
         GUILayout.BeginArea(new Rect(Screen.width - w -5, Screen.height - h -5, w, h), GUI.skin.box);
 
