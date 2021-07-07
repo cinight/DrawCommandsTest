@@ -37,8 +37,15 @@ public class Graphics_DrawProceduralNow_URP : MonoBehaviour
         positions = ObjectTransforms.GenerateObjPosV4(count,offset.position,spacing);
     }
 
+    void OnDisable()
+    {
+        Debug.Log("OnDisable");
+        RenderPipelineManager.endCameraRendering -= OnEndCameraRendering;
+    }
+
     void OnDestroy()
     {
+        Debug.Log("OnDestroy");
         RenderPipelineManager.endCameraRendering -= OnEndCameraRendering;
     }
 

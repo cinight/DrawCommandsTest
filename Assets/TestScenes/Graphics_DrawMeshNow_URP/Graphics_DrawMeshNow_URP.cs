@@ -32,8 +32,15 @@ public class Graphics_DrawMeshNow_URP : MonoBehaviour
         }
     }
 
+    void OnDisable()
+    {
+        Debug.Log("OnDisable");
+        RenderPipelineManager.endCameraRendering -= OnEndCameraRendering;
+    }
+
     void OnDestroy()
     {
+        Debug.Log("OnDestroy");
         RenderPipelineManager.endCameraRendering -= OnEndCameraRendering;
     }
 
