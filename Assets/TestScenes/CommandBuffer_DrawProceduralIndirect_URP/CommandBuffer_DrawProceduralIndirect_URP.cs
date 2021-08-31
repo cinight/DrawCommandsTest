@@ -29,8 +29,8 @@ public class CommandBuffer_DrawProceduralIndirect_URP : ScriptableRendererFeatur
 	public override void Create()
     {
         CleanUp();
-        positionBuffer = new ComputeBuffer(count, 16);
-        argsBuffer = new ComputeBuffer(1, 5 * sizeof(uint), ComputeBufferType.IndirectArguments);
+        if (positionBuffer == null) positionBuffer = new ComputeBuffer(count, 16);
+        if (argsBuffer == null) argsBuffer = new ComputeBuffer(1, 5 * sizeof(uint), ComputeBufferType.IndirectArguments);
 	}
 
 

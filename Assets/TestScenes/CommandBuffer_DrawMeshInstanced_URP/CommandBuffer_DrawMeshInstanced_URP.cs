@@ -16,6 +16,7 @@ public class CommandBuffer_DrawMeshInstanced_URP : ScriptableRendererFeature
     [Header("Content")]
     public Mesh mesh;
     public Material material;
+    public int shaderPass;
 
     [Header("Settings")]
     public RenderPassEvent Event = RenderPassEvent.AfterRenderingPostProcessing;
@@ -30,7 +31,7 @@ public class CommandBuffer_DrawMeshInstanced_URP : ScriptableRendererFeature
 
     public override void AddRenderPasses(ScriptableRenderer renderer, ref RenderingData renderingData)
     {
-        var pass = new CommandBuffer_DrawMeshInstanced_URPPass(Event,count,spacing,anchor,mesh,material);
+        var pass = new CommandBuffer_DrawMeshInstanced_URPPass(Event,count,spacing,anchor,mesh,material,shaderPass);
         renderer.EnqueuePass(pass);
     }
 
@@ -47,13 +48,14 @@ public class CommandBuffer_DrawMeshInstanced_URP : ScriptableRendererFeature
 
         private Mesh mesh;
         private Material material;
+        private int shaderPass;
 
         private Vector3[] positions;
         private Quaternion[] rotations;
         private Matrix4x4[] matrix;
 
         public CommandBuffer_DrawMeshInstanced_URPPass(RenderPassEvent renderPassEvent, 
-        int count, float spacing, Vector3 anchor, Mesh mesh, Material material)
+        int count, float spacing, Vector3 anchor, Mesh mesh, Material material, int shaderPass)
         {
             this.renderPassEvent = renderPassEvent;
 
@@ -62,6 +64,7 @@ public class CommandBuffer_DrawMeshInstanced_URP : ScriptableRendererFeature
             this.anchor = anchor;
             this.mesh = mesh;
             this.material = material;
+            this.shaderPass = shaderPass;
 
             SetUp();
         }
@@ -81,7 +84,7 @@ public class CommandBuffer_DrawMeshInstanced_URP : ScriptableRendererFeature
         {
             CommandBuffer cmd = CommandBufferPool.Get("CommandBuffer_DrawMeshInstanced_URP");
 
-            cmd.DrawMeshInstanced(mesh,0,material,0,matrix,count);
+            cmd.DrawMeshInstanced(mesh,0,material,shaderPass,matrix,count);
 
             context.ExecuteCommandBuffer(cmd);
             CommandBufferPool.Release(cmd);
