@@ -11,6 +11,3 @@
 ### Issues
 - DrawProceduralNow / DrawProceduralIndirectNow URP is weird
 - Some buffer leak when entering or exit play / switch scenes
-
-### Hybrid
-- Bindset and draw commands?
