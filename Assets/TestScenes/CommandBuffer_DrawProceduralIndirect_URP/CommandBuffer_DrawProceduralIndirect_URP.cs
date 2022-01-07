@@ -99,8 +99,8 @@ public class CommandBuffer_DrawProceduralIndirect_URP : ScriptableRendererFeatur
             args[2] = (uint)0; // start vertex location
             args[3] = (uint)0; // start instance location
 
-            cmd.SetComputeBufferData(positionBuffer,positions);
-            cmd.SetComputeBufferData(argsBuffer,args);
+            cmd.SetBufferData(positionBuffer,positions);
+            cmd.SetBufferData(argsBuffer,args);
             material.SetBuffer("positionBuffer", positionBuffer);
         }
 

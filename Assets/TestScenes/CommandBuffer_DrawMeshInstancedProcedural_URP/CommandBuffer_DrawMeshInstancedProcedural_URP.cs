@@ -82,7 +82,7 @@ public class CommandBuffer_DrawMeshInstancedProcedural_URP : ScriptableRendererF
         public override void Configure(CommandBuffer cmd, RenderTextureDescriptor cameraTextureDescriptor)
         {
             if(positions==null) positions = ObjectTransforms.GenerateObjPos(count,anchor,spacing);
-            cmd.SetComputeBufferData(positionBuffer,positions);
+            cmd.SetBufferData(positionBuffer,positions);
             material.SetBuffer("positionBuffer", positionBuffer);
         }
 

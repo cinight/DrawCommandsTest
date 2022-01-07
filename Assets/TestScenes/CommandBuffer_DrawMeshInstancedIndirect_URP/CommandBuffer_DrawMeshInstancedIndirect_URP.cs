@@ -99,8 +99,8 @@ public class CommandBuffer_DrawMeshInstancedIndirect_URP : ScriptableRendererFea
             args[2] = (uint)mesh.GetIndexStart(0);
             args[3] = (uint)mesh.GetBaseVertex(0);
 
-            cmd.SetComputeBufferData(positionBuffer,positions);
-            cmd.SetComputeBufferData(argsBuffer,args);
+            cmd.SetBufferData(positionBuffer,positions);
+            cmd.SetBufferData(argsBuffer,args);
             material.SetBuffer("positionBuffer", positionBuffer);
         }
 
