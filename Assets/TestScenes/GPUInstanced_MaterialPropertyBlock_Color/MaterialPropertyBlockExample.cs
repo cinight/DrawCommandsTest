@@ -1,3 +1,4 @@
+//This example comes from documentation - https://docs.unity3d.com/Manual/gpu-instancing-shader.html#changing-per-instanced-data-at-runtime
 using UnityEngine;
 
 public class MaterialPropertyBlockExample : MonoBehaviour
