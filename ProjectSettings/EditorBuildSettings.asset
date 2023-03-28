@@ -80,4 +80,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/TestScenes/Graphics_DrawProceduralNow_URP/Graphics_DrawProceduralNow_URP.unity
     guid: 12ed6ba02b1f30a43a52a845b6bbb7b1
+  - enabled: 1
+    path: Assets/TestScenes/GPUInstanced_MaterialPropertyBlock_Color/GPUInstanced_MaterialPropertyBlock_Color.unity
+    guid: 2dab97a9d9a40744d967e439c59181c9
+  - enabled: 1
+    path: Assets/TestScenes/GPUInstanced_MaterialPropertyBlock_Color_URP/GPUInstanced_MaterialPropertyBlock_Color_URP.unity
+    guid: bfa92ddaf3c82a8498b1dd0b6e75508a
   m_configObjects: {}

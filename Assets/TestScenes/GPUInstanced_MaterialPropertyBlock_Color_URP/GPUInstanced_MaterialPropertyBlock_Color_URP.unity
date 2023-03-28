@@ -209,6 +209,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 1525393719}
   - {fileID: 1035257122}
   - {fileID: 1158945596}
   m_Father: {fileID: 0}
@@ -449,7 +450,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: e6246b56a47e458499de0f3864cbe26f, type: 2}
+  - {fileID: 2100000, guid: 8557fe976d06a9243923e1440caf8b2f, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -532,7 +533,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: e6246b56a47e458499de0f3864cbe26f, type: 2}
+  - {fileID: 2100000, guid: 8557fe976d06a9243923e1440caf8b2f, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -698,7 +699,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: ffd406501936f874eaabb276a91586d1, type: 2}
+  - {fileID: 2100000, guid: 0acaee896c8a82d4fb6a2feca9e85afb, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -899,7 +900,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: e6246b56a47e458499de0f3864cbe26f, type: 2}
+  - {fileID: 2100000, guid: 8557fe976d06a9243923e1440caf8b2f, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -967,7 +968,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: ffd406501936f874eaabb276a91586d1, type: 2}
+  - {fileID: 2100000, guid: 0acaee896c8a82d4fb6a2feca9e85afb, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1099,6 +1100,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1321086804465450492, guid: 4cd6c3ac9af98b842874f6fd87b5ce5e, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 199a1292333bc274c831767bf37a859e, type: 2}
     - target: {fileID: 1321086804465450494, guid: 4cd6c3ac9af98b842874f6fd87b5ce5e, type: 3}
       propertyPath: m_Name
       value: Plane_Standard
@@ -1153,11 +1158,11 @@ TextMesh:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1280178232}
-  m_Text: 'Standard shader
+  m_Text: 'URP Lit
 
     (no per instance property)
 
-    Instanced'
+    SRP batched'
   m_OffsetZ: 0
   m_CharacterSize: 0.2
   m_LineSpacing: 1
@@ -1245,8 +1250,8 @@ Transform:
   - {fileID: 1753638535}
   - {fileID: 1123255228}
   - {fileID: 1735822674}
-  m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_Father: {fileID: 82977048}
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1673199967
 GameObject:
@@ -1301,7 +1306,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: e6246b56a47e458499de0f3864cbe26f, type: 2}
+  - {fileID: 2100000, guid: 8557fe976d06a9243923e1440caf8b2f, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1372,9 +1377,7 @@ TextMesh:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1735822673}
-  m_Text: 'Shader Graph
-
-    Not Instanced'
+  m_Text: "Shader Graph\n Instanced"
   m_OffsetZ: 0
   m_CharacterSize: 0.2
   m_LineSpacing: 1
@@ -1387,7 +1390,7 @@ TextMesh:
   m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
   m_Color:
     serializedVersion: 2
-    rgba: 4287269631
+    rgba: 4294967295
 --- !u!23 &1735822676
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1483,7 +1486,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: ffd406501936f874eaabb276a91586d1, type: 2}
+  - {fileID: 2100000, guid: 0acaee896c8a82d4fb6a2feca9e85afb, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1684,7 +1687,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: e6246b56a47e458499de0f3864cbe26f, type: 2}
+  - {fileID: 2100000, guid: 8557fe976d06a9243923e1440caf8b2f, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1752,7 +1755,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: e6246b56a47e458499de0f3864cbe26f, type: 2}
+  - {fileID: 2100000, guid: 8557fe976d06a9243923e1440caf8b2f, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1918,7 +1921,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc444ff6f802048f3a28b498c1256e9c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  renderPipelineAsset: {fileID: 0}
+  renderPipelineAsset: {fileID: 11400000, guid: 19ba41d7c0026c3459d37c2fe90c55a0, type: 2}
 --- !u!4 &2073657383
 Transform:
   m_ObjectHideFlags: 0
@@ -1960,7 +1963,7 @@ TextMesh:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2132223199}
-  m_Text: 'Standard shader
+  m_Text: 'URP Lit
 
     Not instanced'
   m_OffsetZ: 0
@@ -1975,7 +1978,7 @@ TextMesh:
   m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
   m_Color:
     serializedVersion: 2
-    rgba: 4289177599
+    rgba: 4285230079
 --- !u!23 &2132223201
 MeshRenderer:
   m_ObjectHideFlags: 0
