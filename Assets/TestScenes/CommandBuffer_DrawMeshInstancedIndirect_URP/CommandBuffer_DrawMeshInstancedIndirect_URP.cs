@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Experimental.Rendering.RenderGraphModule;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.Rendering.Universal.Internal;
@@ -20,8 +21,10 @@ public class CommandBuffer_DrawMeshInstancedIndirect_URP : ScriptableRendererFea
     [Header("Settings")]
     public RenderPassEvent Event = RenderPassEvent.AfterRenderingPostProcessing;
 
-    private ComputeBuffer positionBuffer;
-    private ComputeBuffer argsBuffer;
+    private GraphicsBuffer positionBuffer;
+    private GraphicsBuffer argsBuffer;
+
+    private CommandBuffer_DrawMeshInstancedIndirect_URPPass pass;
 
 	public CommandBuffer_DrawMeshInstancedIndirect_URP()
 	{
@@ -30,13 +33,14 @@ public class CommandBuffer_DrawMeshInstancedIndirect_URP : ScriptableRendererFea
 	public override void Create()
     {
         CleanUp();
-        positionBuffer = new ComputeBuffer(count, 12);
-        argsBuffer = new ComputeBuffer(1, 5 * sizeof(uint), ComputeBufferType.IndirectArguments);
+        positionBuffer = new GraphicsBuffer(GraphicsBuffer.Target.Structured, count, 12);
+        argsBuffer = new GraphicsBuffer(GraphicsBuffer.Target.IndirectArguments, 1, 5 * sizeof(uint));
+        
+        pass = new CommandBuffer_DrawMeshInstancedIndirect_URPPass(Event,count,spacing,anchor,mesh,material,positionBuffer,argsBuffer);
 	}
 
     public override void AddRenderPasses(ScriptableRenderer renderer, ref RenderingData renderingData)
     {
-        var pass = new CommandBuffer_DrawMeshInstancedIndirect_URPPass(Event,count,spacing,anchor,mesh,material,positionBuffer,argsBuffer);
         renderer.EnqueuePass(pass);
     }
 
@@ -70,13 +74,16 @@ public class CommandBuffer_DrawMeshInstancedIndirect_URP : ScriptableRendererFea
         private Mesh mesh;
         private Material material;
 
+        private uint[] args;
         private Vector3[] positions;
-
-        private ComputeBuffer positionBuffer;
-        private ComputeBuffer argsBuffer;
+        
+        private GraphicsBuffer positionBuffer;
+        private GraphicsBuffer argsBuffer;
+        
+        private string passName = "CommandBuffer_DrawMeshInstancedIndirect_URP";
 
         public CommandBuffer_DrawMeshInstancedIndirect_URPPass(RenderPassEvent renderPassEvent, 
-        int count, float spacing, Vector3 anchor, Mesh mesh, Material material, ComputeBuffer posB, ComputeBuffer argB)
+        int count, float spacing, Vector3 anchor, Mesh mesh, Material material, GraphicsBuffer posB, GraphicsBuffer argB)
         {
             this.renderPassEvent = renderPassEvent;
 
@@ -87,31 +94,88 @@ public class CommandBuffer_DrawMeshInstancedIndirect_URP : ScriptableRendererFea
             this.material = material;
             this.positionBuffer = posB;
             this.argsBuffer = argB;
+
+            Setup();
         }
 
-        public override void Configure(CommandBuffer cmd, RenderTextureDescriptor cameraTextureDescriptor)
+        private void Setup()
         {
             if(positions==null) positions = ObjectTransforms.GenerateObjPos(count,anchor,spacing);
             
-            uint[] args = new uint[5] { 0, 0, 0, 0, 0 };
+            args = new uint[5] { 0, 0, 0, 0, 0 };
             args[0] = (uint)mesh.GetIndexCount(0);
             args[1] = (uint)count;
             args[2] = (uint)mesh.GetIndexStart(0);
             args[3] = (uint)mesh.GetBaseVertex(0);
-
-            cmd.SetBufferData(positionBuffer,positions);
-            cmd.SetBufferData(argsBuffer,args);
-            material.SetBuffer("positionBuffer", positionBuffer);
         }
 
         public override void Execute(ScriptableRenderContext context, ref RenderingData renderingData)
         {
-            CommandBuffer cmd = CommandBufferPool.Get("CommandBuffer_DrawMeshInstancedIndirect_URP");
-
+            material.SetBuffer("positionBuffer", positionBuffer);
+            
+            CommandBuffer cmd = CommandBufferPool.Get(passName);
+            cmd.SetBufferData(positionBuffer,positions);
+            cmd.SetBufferData(argsBuffer,args);
             cmd.DrawMeshInstancedIndirect(mesh,0,material,0,argsBuffer,0);
-
             context.ExecuteCommandBuffer(cmd);
             CommandBufferPool.Release(cmd);
+        }
+        
+        private class PassBufferData
+        {
+            internal GraphicsBuffer positionBuffer;
+            internal Vector3[] positions;
+            internal GraphicsBuffer argsBuffer;
+            internal uint[] args;
+        }
+        
+        private class PassData
+        {
+            internal Mesh mesh;
+            internal Material material;
+            internal GraphicsBuffer argsBuffer;
+        }
+
+        public override void RecordRenderGraph(RenderGraph renderGraph, ContextContainer frameData)
+        {
+            material.SetBuffer("positionBuffer", positionBuffer);
+            
+            //Set data to buffer
+            using (var builder = renderGraph.AddLowLevelPass<PassBufferData>(passName+"_SetBuffer", out var passData))
+            {
+                //The compute will be culled because attachment dimensions is 0x0x0, so here we make sure it is not culled
+                builder.AllowPassCulling(false);
+                
+                //Setup passData
+                passData.positionBuffer = positionBuffer;
+                passData.positions = positions;
+                passData.argsBuffer = argsBuffer;
+                passData.args = args;
+
+                //Render function
+                builder.SetRenderFunc((PassBufferData data, LowLevelGraphContext rgContext) =>
+                {
+                    rgContext.legacyCmd.SetBufferData(data.positionBuffer,data.positions);
+                    rgContext.legacyCmd.SetBufferData(data.argsBuffer,data.args);
+                });
+            }
+            
+            using (var builder = renderGraph.AddRasterRenderPass<PassData>(passName, out var passData))
+            {
+                //Make sure the pass will not be culled
+                builder.AllowPassCulling(false);
+
+                //Setup passData
+                passData.mesh = mesh;
+                passData.material = material;
+                passData.argsBuffer = argsBuffer;
+                
+                //Render function
+                builder.SetRenderFunc((PassData data, RasterGraphContext rgContext) =>
+                {
+                    rgContext.cmd.DrawMeshInstancedIndirect(data.mesh,0,data.material, 0, data.argsBuffer, 0);
+                });
+            }
         }
     }
 }
