@@ -19,10 +19,9 @@ public class Graphics_DrawProceduralNow_URP : MonoBehaviour
     void Start()
     {
         SetUp();
-        RenderPipelineManager.endCameraRendering += OnEndCameraRendering;
     }
 
-    void OnEndCameraRendering(ScriptableRenderContext context, Camera camera)
+    public void OnRenderObject() 
     {
         for(int i=0; i<count; i++)
         {
@@ -31,22 +30,10 @@ public class Graphics_DrawProceduralNow_URP : MonoBehaviour
             Graphics.DrawProceduralNow(MeshTopology.Triangles, 3, 1);
         }
     }
-
+ 
     private void SetUp()
     {
         positions = ObjectTransforms.GenerateObjPosV4(count,offset.position,spacing);
-    }
-
-    void OnDisable()
-    {
-        Debug.Log("OnDisable");
-        RenderPipelineManager.endCameraRendering -= OnEndCameraRendering;
-    }
-
-    void OnDestroy()
-    {
-        Debug.Log("OnDestroy");
-        RenderPipelineManager.endCameraRendering -= OnEndCameraRendering;
     }
 
     void OnValidate()

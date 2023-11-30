@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Experimental.Rendering.RenderGraphModule;
+using UnityEngine.Rendering.RenderGraphModule;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.Rendering.Universal.Internal;
@@ -107,17 +107,32 @@ public class CommandBuffer_DrawMeshInstanced_URP : ScriptableRendererFeature
 
         public override void RecordRenderGraph(RenderGraph renderGraph, ContextContainer frameData)
         {
+            UniversalResourceData resourceData = frameData.Get<UniversalResourceData>();
+            UniversalCameraData cameraData = frameData.Get<UniversalCameraData>();
+            
+            //shouldn't blit from the backbuffer
+            if (resourceData.isActiveTargetBackBuffer)
+                return;
+            
+            //Destination
+            TextureHandle dest = resourceData.cameraColor;
+            
+            //To avoid error from material preview in the scene
+            if(!dest.IsValid())
+                return;
+            
             using (var builder = renderGraph.AddRasterRenderPass<PassData>(passName, out var passData))
             {
-                //Make sure the pass will not be culled
-                builder.AllowPassCulling(false);
-
                 //Setup passData
                 passData.mesh = mesh;
                 passData.material = material;
                 passData.shaderPass = shaderPass;
                 passData.matrix = matrix;
                 passData.count = count;
+                
+                //setup builder
+                builder.SetRenderAttachment(dest,0);
+                builder.AllowPassCulling(false);
                 
                 //Render function
                 builder.SetRenderFunc((PassData data, RasterGraphContext rgContext) =>

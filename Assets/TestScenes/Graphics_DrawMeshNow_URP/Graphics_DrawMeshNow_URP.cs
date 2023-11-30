@@ -20,28 +20,15 @@ public class Graphics_DrawMeshNow_URP : MonoBehaviour
     void Start()
     {
         SetUp();
-        RenderPipelineManager.endCameraRendering += OnEndCameraRendering;
     }
-
-    void OnEndCameraRendering(ScriptableRenderContext context, Camera camera)
+    
+    public void OnRenderObject() 
     {
         material.SetPass(0);
         for(int i=0; i<count; i++)
         {
             Graphics.DrawMeshNow(mesh,positions[i],rotations[i]);
         }
-    }
-
-    void OnDisable()
-    {
-        Debug.Log("OnDisable");
-        RenderPipelineManager.endCameraRendering -= OnEndCameraRendering;
-    }
-
-    void OnDestroy()
-    {
-        Debug.Log("OnDestroy");
-        RenderPipelineManager.endCameraRendering -= OnEndCameraRendering;
     }
 
     private void SetUp()

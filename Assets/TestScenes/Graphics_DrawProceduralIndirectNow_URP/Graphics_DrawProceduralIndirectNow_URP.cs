@@ -23,15 +23,14 @@ public class Graphics_DrawProceduralIndirectNow_URP : MonoBehaviour
     void Start()
     {
         SetUp();
-        RenderPipelineManager.endCameraRendering += OnEndCameraRendering;
     }
 
-    void OnEndCameraRendering(ScriptableRenderContext context, Camera camera)
+    public void OnRenderObject() 
     {
         material.SetPass(0);
         Graphics.DrawProceduralIndirectNow(MeshTopology.Triangles, argsBuffer, 0);
     }
-
+    
     private void SetUp()
     {
         CleanUp();
@@ -76,11 +75,6 @@ public class Graphics_DrawProceduralIndirectNow_URP : MonoBehaviour
     void OnDisable()
     {
         CleanUp();
-    }
-
-    void OnDestroy()
-    {
-        RenderPipelineManager.endCameraRendering -= OnEndCameraRendering;
     }
 
     private void CleanUp()
