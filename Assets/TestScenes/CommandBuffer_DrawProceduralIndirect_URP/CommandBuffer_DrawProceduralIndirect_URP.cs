@@ -79,7 +79,7 @@ public class CommandBuffer_DrawProceduralIndirect_URP : ScriptableRendererFeatur
         private GraphicsBuffer positionBuffer;
         private GraphicsBuffer argsBuffer;
         
-        private string passName = "CommandBuffer_DrawProceduralIndirect_URPPass";
+        private const string k_PassName = "CommandBuffer_DrawProceduralIndirect_URPPass";
 
         public CommandBuffer_DrawProceduralIndirect_URPPass(RenderPassEvent renderPassEvent, 
         int count, float spacing, Vector3 anchor, Material material, GraphicsBuffer posB, GraphicsBuffer argB)
@@ -107,12 +107,13 @@ public class CommandBuffer_DrawProceduralIndirect_URP : ScriptableRendererFeatur
             args[2] = (uint)0; // start vertex location
             args[3] = (uint)0; // start instance location
         }
-
+        
+        [Obsolete("This method is used in Compatibility Mode (non-RenderGraph)")]
         public override void Execute(ScriptableRenderContext context, ref RenderingData renderingData)
         {
             material.SetBuffer("positionBuffer", positionBuffer);
             
-            CommandBuffer cmd = CommandBufferPool.Get(passName);
+            CommandBuffer cmd = CommandBufferPool.Get(k_PassName);
             cmd.SetBufferData(positionBuffer,positions);
             cmd.SetBufferData(argsBuffer,args);
             cmd.DrawProceduralIndirect(Matrix4x4.identity,material, 0, MeshTopology.Triangles, argsBuffer, 0);
@@ -146,7 +147,7 @@ public class CommandBuffer_DrawProceduralIndirect_URP : ScriptableRendererFeatur
             
             //Set data to buffer
             material.SetBuffer("positionBuffer", positionBuffer);
-            using (var builder = renderGraph.AddUnsafePass<PassBufferData>(passName+"_SetBuffer", out var passData))
+            using (var builder = renderGraph.AddUnsafePass<PassBufferData>(k_PassName+"_SetBuffer", out var passData))
             {
                 //The compute will be culled because attachment dimensions is 0x0x0, so here we make sure it is not culled
                 builder.AllowPassCulling(false);
@@ -172,7 +173,7 @@ public class CommandBuffer_DrawProceduralIndirect_URP : ScriptableRendererFeatur
             if(!dest.IsValid())
                 return;
             
-            using (var builder = renderGraph.AddRasterRenderPass<PassData>(passName, out var passData))
+            using (var builder = renderGraph.AddRasterRenderPass<PassData>(k_PassName, out var passData))
             {
                 //Setup passData
                 passData.material = material;

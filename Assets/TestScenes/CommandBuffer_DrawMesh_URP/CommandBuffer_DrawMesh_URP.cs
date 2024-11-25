@@ -57,7 +57,7 @@ public class CommandBuffer_DrawMesh_URP : ScriptableRendererFeature
         private Quaternion[] rotations;
         private Matrix4x4[] matrix;
         
-        private string passName = "CommandBuffer_DrawMesh_URP";
+        private const string k_PassName = "CommandBuffer_DrawMesh_URP";
 
         public CommandBuffer_DrawMesh_URPPass(RenderPassEvent renderPassEvent, 
         int count, float spacing, Vector3 anchor, Mesh mesh, Material material, int shaderPass)
@@ -84,10 +84,11 @@ public class CommandBuffer_DrawMesh_URP : ScriptableRendererFeature
                 matrix[i] = Matrix4x4.TRS( positions[i] , rotations[i] ,Vector3.one);
             }
         }
-
+        
+        [Obsolete("This method is used in Compatibility Mode (non-RenderGraph)")]
         public override void Execute(ScriptableRenderContext context, ref RenderingData renderingData)
         {
-            CommandBuffer cmd = CommandBufferPool.Get(passName);
+            CommandBuffer cmd = CommandBufferPool.Get(k_PassName);
             for(int i=0; i<count; i++)
             {
                 cmd.DrawMesh(mesh,matrix[i],material,0,shaderPass);
@@ -121,7 +122,7 @@ public class CommandBuffer_DrawMesh_URP : ScriptableRendererFeature
             if(!dest.IsValid())
                 return;
             
-            using (var builder = renderGraph.AddRasterRenderPass<PassData>(passName, out var passData))
+            using (var builder = renderGraph.AddRasterRenderPass<PassData>(k_PassName, out var passData))
             {
                 //Setup passData
                 passData.mesh = mesh;
